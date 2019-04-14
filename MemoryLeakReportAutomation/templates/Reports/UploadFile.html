@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Memory Leak Details</title>
+    {% load staticfiles %}
+    <link href="{%static 'Reports/bootstrap/bootstrap.min.css'%}" type="text/css" rel="stylesheet">
+    <link href="{% static 'Reports/font-awesome/css/font-awesome.min.css'%}" rel="stylesheet" type="text/css" />
+    </head>
+<body class="container">
+    <h3 class="text-center"> Memory Leak Analysis</h3>
+    <hr />
+<form action="{%url 'form'%}" method="post" enctype="multipart/form-data" class="form-inline needs-validation" target="_blank" novalidate>
+    {%csrf_token%}
+    
+    <div class="form-group col-lg-4 sm-4">	
+	    <label for="Excelfile"><b>Upload csv</b></label>
+        <!--input type="text" readonly class="custom-file-label" id="Excelfilelabel" style="font-weight:bold;" value="Upload csv from Performance Monitor">-->
+	    <input type="file" name="Excelfile" id="Excelfile" accept=".csv" required onClick="(function () { document.getElementById('invalid-feedback').innerHTML = ''; })();">
+        <div id="invalid-feedback" style="color:red;"></div>
+    </div>
+    <div class="col-lg-2"></div>
+    <button type="submit" name="submit" class="btn btn-success col-lg-1 sm-1">Submit</button>
+</form>
+    <p>
+        <br />
+        <em>USAGE:</em><br/>
+        1. Upload a .csv file generated from Performance Monitor<br />
+        2. The first column should contain Date and Time<br />
+        3. After uploading, the tool redirects to new page which displays the charts and trendlines for each Performance Counter.<br />
+        4. The amount of leak is displayed below each chart.<br />
+
+        <strong>NOTE: Please check that the first column of csv file contains Date and Time. Otherwise, charts cannot be generated.<br/> The data should be continous.  Graphs cannot be generated for the data which contains empty rows<br /></strong>
+
+    </p>
+<hr />
+{% load staticfiles %}
+<b>For the csv extracted from PD:</b><br />
+<a href="{% static 'Reports/charts.exe' %}" download="MemoryLeak Charts.exe">Download <span class="fa fa-download"></span> </a> .exe
+
+<p>
+   <br />
+   <em>USAGE:</em><br/>
+    1. If you are using csv file extracted from PD, the use this .exe <br />
+    2. After it is run,it prompts for the absolute path of the .csv file along with the extension<br />
+    3. This will generate a new .xlsx file with the same name as .csv in the same location.<br />
+    4. This .xlsx file contains the graphs plotted against Session number.<br />
+</p>
+
+</body>
+<script>
+    // JavaScript for disabling form submissions if there are invalid fields
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch the form we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity() || !document.getElementById("Excelfile").value.endsWith(".csv")) {
+                        document.getElementById("invalid-feedback").innerHTML = "Please enter a valid .csv file!";
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
+</script>
+</html>

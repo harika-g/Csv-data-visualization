@@ -1,0 +1,19 @@
+<html>
+<head>
+    <title>Memory Leak Reports</title>
+    {% load staticfiles %}
+    <link href="{%static 'Reports/bootstrap/bootstrap.min.css'%}" type="text/css" rel="stylesheet">
+    <script src="{% static 'Reports/d3/d3.min.js'%}" type="text/javascript"></script>
+    <script src="{% static 'Reports/jquery/jquery-3.3.1.min.js'%}" type="text/javascript"></script> 
+
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>-->
+
+    {% load staticfiles %}
+    <script id ="jscall" src="{% static 'Reports/d3charts.js' %}" pathvar="{{path}}"></script>
+</head>
+
+<body onload="drawCharts()">
+     <h3 class="text-center">Memory Leak Analysis for {{path}}</h3>
+     <h5 id="OOM exception" style="color:GrayText" class="text-center"></h5>
+</body>
+</html>
